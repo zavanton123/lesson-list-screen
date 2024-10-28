@@ -3,14 +3,18 @@ package ru.zavanton.app
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
@@ -20,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -51,18 +54,46 @@ internal fun LessonListScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            SearchBar(
-                query = "Search...",
-                onQueryChange = { },
-                onSearch = { },
-                active = false,
-                onActiveChange = { },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                content = {
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp)
+                    .background(Color.LightGray)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                SearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    query = "Search...",
+                    onQueryChange = { },
+                    onSearch = { },
+                    active = false,
+                    onActiveChange = { },
+                    content = {}
+                )
+
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                ) {
+                    Text(text = "Easy >")
+                    Spacer(modifier = Modifier.weight(1F))
+
+                    Text(text = "Complete >")
+                    Spacer(modifier = Modifier.weight(1F))
+
+                    Text(text = "Premium >")
                 }
-            )
+
+                Column(
+                    modifier = Modifier.width(IntrinsicSize.Max)
+                ) {
+                    SelectionOption("Beginner", true)
+                    SelectionOption("Intermediate")
+                    SelectionOption("Advanced")
+                }
+            }
         },
         content = { padding ->
             LazyColumn(
@@ -76,6 +107,18 @@ internal fun LessonListScreen(
             }
         }
     )
+}
+
+@Composable
+private fun SelectionOption(
+    label: String,
+    isSelected: Boolean = false,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(text = label)
+        Spacer(modifier = Modifier.weight(1F))
+        RadioButton(selected = isSelected, onClick = {})
+    }
 }
 
 @Composable
