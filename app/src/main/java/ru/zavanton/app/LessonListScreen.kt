@@ -1,6 +1,8 @@
 package ru.zavanton.app
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,13 +11,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -61,7 +68,9 @@ internal fun LessonListScreen(
         },
         content = { padding ->
             LazyColumn(
-                modifier = Modifier.padding(padding)
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(horizontal = 16.dp)
             ) {
                 items(state.items) { item ->
                     LessonItem(item)
@@ -76,14 +85,27 @@ private fun LessonItem(
     state: LessonListItemUiState,
     modifier: Modifier = Modifier,
 ) {
-    Row {
-        AsyncImage(
-            modifier = modifier
-                .size(60.dp),
-            model = state.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-        )
+    Row(
+        modifier = modifier
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(60.dp)
+                .clip(CircleShape)
+                .background(Color.Red)
+        ) {
+            AsyncImage(
+                modifier = modifier
+                    .size(60.dp),
+                model = state.imageUrl,
+                placeholder = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+            )
+        }
 
         Column {
             Text(
