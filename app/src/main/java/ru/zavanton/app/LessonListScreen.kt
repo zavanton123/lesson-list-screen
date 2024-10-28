@@ -1,9 +1,6 @@
 package ru.zavanton.app
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -95,13 +93,12 @@ private fun LessonItem(
                 .padding(end = 16.dp)
                 .size(60.dp)
                 .clip(CircleShape)
-                .background(Color.Red)
+                .background(Color.LightGray)
         ) {
             AsyncImage(
                 modifier = modifier
                     .size(60.dp),
                 model = state.imageUrl,
-                placeholder = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
             )
@@ -115,7 +112,6 @@ private fun LessonItem(
             Text(
                 text = state.subtitle,
             )
-
         }
 
     }
@@ -132,7 +128,9 @@ internal class LessonListUiStateProvider : PreviewParameterProvider<LessonListUi
         streak = "3 days streak"
     )
 
-    val items = listOf(item, item, item, item, item)
+    val items = List(size = 20) {
+        item
+    }
 
     val state = LessonListUiState(
         title = "Lessons",
