@@ -1,6 +1,7 @@
 package ru.zavanton.app
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -167,15 +169,21 @@ private fun LessonItem(
         }
 
         Column {
-            Text(
-                text = state.title,
-            )
-
-            Text(
-                text = state.subtitle,
-            )
+            Text(text = state.title)
+            Text(text = state.subtitle)
         }
 
+        Spacer(modifier = Modifier.weight(1F))
+
+        Text(
+            modifier = Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xffE4E0E1))
+                .padding(horizontal = 8.dp)
+                .padding(vertical = 4.dp)
+            ,
+            text = state.duration,
+        )
     }
 }
 
@@ -183,8 +191,8 @@ internal class LessonListUiStateProvider : PreviewParameterProvider<LessonListUi
 
     val item = LessonListItemUiState(
         imageUrl = "https://picsum.photos/200/200",
-        title = "Lesson 1 - About London",
-        subtitle = "London is the capital of Great Britain",
+        title = "Lesson 1 - London",
+        subtitle = "London is the capital of Gr... ",
         duration = "10:00",
         difficulty = "EASY",
         streak = "3 days streak"
