@@ -1,13 +1,17 @@
 package ru.zavanton.app
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -117,13 +122,33 @@ internal fun LessonListScreen(
             }
         },
         content = { padding ->
-            LazyColumn(
-                modifier = Modifier
-                    .padding(padding)
-                    .padding(horizontal = 16.dp)
-            ) {
-                items(state.items) { item ->
-                    LessonItem(item)
+            var isEmpty by rememberSaveable { mutableStateOf(true) }
+            if (isEmpty) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable { isEmpty = false },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "No lessons found",
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_format_list_bulleted_24),
+                        contentDescription = "ok",
+                    )
+                }
+
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(padding)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(state.items) { item ->
+                        LessonItem(item)
+                    }
                 }
             }
         }
@@ -180,15 +205,13 @@ private fun LessonItem(
                 .clip(RoundedCornerShape(20.dp))
                 .background(Color(0xffE4E0E1))
                 .padding(horizontal = 8.dp)
-                .padding(vertical = 4.dp)
-            ,
+                .padding(vertical = 4.dp),
             text = state.duration,
         )
     }
 }
 
 internal class LessonListUiStateProvider : PreviewParameterProvider<LessonListUiState> {
-
     val item = LessonListItemUiState(
         imageUrl = "https://picsum.photos/200/200",
         title = "Lesson 1 - London",
@@ -207,9 +230,9 @@ internal class LessonListUiStateProvider : PreviewParameterProvider<LessonListUi
         items = items,
     )
 
-    override val values: Sequence<LessonListUiState> = sequenceOf(
-        state
-    )
+    val emptyState = state.copy(items = emptyList())
+
+    override val values: Sequence<LessonListUiState> = sequenceOf(state, emptyState)
 }
 
 @Composable
